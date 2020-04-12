@@ -1,0 +1,4 @@
+---
+
+home_dir: "{{ ansible_user_dir }}"
+timeout_value: "30"

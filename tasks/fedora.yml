@@ -1,0 +1,9 @@
+---
+
+- name: "Instalando o pacote 'Ansible'"
+  dnf:
+   name: ansible
+   state: present
+  become: true
+  tags:
+   - ansible

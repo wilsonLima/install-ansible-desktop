@@ -1,0 +1,89 @@
+---
+
+
+- name: "Instalando as dependencias"
+  apt:
+    name: "{{ debian_like_deps }}"
+    state: present
+    update_cache: yes
+  become: true
+  tags:
+    - deps
+
+
+- name: "Instalando os pacotes do Python 3"
+  apt:
+    name: "{{ python_packages }}"
+    state: present
+    update_cache: yes
+  become: true
+  tags:
+    - deps
+
+
+- name: "Adicionando chave do repositorio do Ansible no Linux Mint"
+  when: ansible_distribution == "Linux Mint" and ansible_distribution_release in mint_versions
+  apt_key:
+    keyserver: "keyserver.ubuntu.com"
+    id: "93C4A3FD7BB9C367"
+  become: true
+  tags:
+    - repo
+
+
+- name: "Adicionando o repositorio do Ansible no Linux Mint"
+  when: ansible_distribution == "Linux Mint" and ansible_distribution_release in mint_versions
+  apt_repository:
+    repo: "deb http://ppa.launchpad.net/ansible/ansible/ubuntu {{ mint_ubuntu_versions[ansible_distribution_major_version] }} main"
+    update_cache: yes
+  become: true
+  tags:
+    - repo
+
+
+- name: "Instalando o pacote 'Ansible' no Linux Mint com APT"
+  when: ansible_distribution == "Linux Mint" and ansible_distribution_release in mint_versions
+  apt:
+    name: ansible
+    state: present
+    update_cache: yes
+  become: true
+  tags:
+    - ansible
+
+
+- name: "Instalando o pacote 'Ansible' no Linux Mint com Python Pip"
+  when: ansible_distribution == "Linux Mint" and ansible_distribution_release in mint_lmde_versions
+  pip:
+    name: ansible
+    state: latest
+  become: true
+  tags:
+    - ansible
+
+
+- name: Criando estrutura de diretorios de /etc/ansible
+  when: ansible_distribution == "Linux Mint" and ansible_distribution_release in mint_lmde_versions
+  file:
+    path: "/etc/ansible"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_real_group_id }}"
+    mode: 0775
+    recurse: yes
+  become: true
+  tags:
+    - config
+
+
+- name: Copiando o arquivo de configuracao ansible.cfg
+  when: ansible_distribution == "Linux Mint" and ansible_distribution_release in mint_lmde_versions
+  copy:
+    src: ansible.cfg
+    dest: /etc/ansible/ansible.cfg
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_real_group_id }}"
+    mode: '0644'
+  become: true
+  tags:
+    - config
