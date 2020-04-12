@@ -45,7 +45,7 @@ Exemplo de uso da Role, com diretório customizado:
 
     - hosts: servers
       roles:
-         - { role: install-ansible-desktop, custom_home: "developer" }
+         - { role: install-ansible-desktop, root_env_dir: "developer" }
 
 Exemplo de Comandos
 ----------------
