@@ -1,13 +1,24 @@
 ---
 
-- name: "Instalando o Python 3"
-  zypper:
-   name: "{{ python_packages }}"
-   state: present
-   force: yes
+
+- name: "Instalando as dependencias"
+  apt:
+    name: "{{ debian_like_deps }}"
+    state: present
+    update_cache: yes
   become: true
   tags:
-   - deps
+    - deps
+
+
+- name: "Instalando os pacotes do Python 3"
+  apt:
+    name: "{{ python_packages }}"
+    state: present
+    update_cache: yes
+  become: true
+  tags:
+    - deps
 
 
 - name: "Atualizando o PIP"
@@ -28,7 +39,7 @@
     - ansible
 
 
-- name: Criando estrutura de diretorios de /etc/ansible
+- name: "Criando estrutura de diretorios de /etc/ansible"
   file:
     path: "/etc/ansible"
     state: directory
@@ -41,9 +52,9 @@
     - config
 
 
-- name: Copiando o arquivo de configuracao ansible.cfg
+- name: "Copiando o arquivo de configuracao ansible.cfg"
   copy:
-    src: ansible.cfg
+    src: "ansible.cfg"
     dest: /etc/ansible/ansible.cfg
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_real_group_id }}"
