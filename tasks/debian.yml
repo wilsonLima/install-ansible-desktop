@@ -1,6 +1,15 @@
 ---
 
 
+- name: "Atualizando apt cache"
+  apt: 
+    update_cache: yes 
+    cache_valid_time: 7200
+  become: true
+  tags:
+    - deps
+
+
 - name: "Instalando as dependencias"
   apt:
     name: "{{ debian_like_deps }}"
