@@ -1,4 +1,6 @@
 ---
 
-- name: Distribuição Linux não suportada
-  register: os_default
+
+- debug: 
+    msg: Distribuição Linux não suportada
+  register: ansible_unsupported_os

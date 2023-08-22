@@ -7,7 +7,8 @@
    force: yes
   become: true
   tags:
-   - deps
+    - ansible
+    - deps
 
 
 - name: "Atualizando o PIP"
@@ -16,6 +17,7 @@
     state: latest
   become: true
   tags:
+    - ansible
     - deps
 
 
@@ -38,16 +40,18 @@
     recurse: yes
   become: true
   tags:
+    - ansible
     - config
 
 
-- name: Copiando o arquivo de configuracao ansible.cfg
+- name: "Copiando o arquivo de configuracao ansible.cfg para /etc/ansible/ansible.cfg"
   copy:
-    src: ansible.cfg
+    src: "ansible.cfg"
     dest: /etc/ansible/ansible.cfg
     owner: "{{ ansible_user_id }}"
     group: "{{ ansible_real_group_id }}"
     mode: '0644'
   become: true
   tags:
+    - ansible
     - config

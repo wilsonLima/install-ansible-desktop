@@ -16,18 +16,28 @@
     - "{{ home_dir }}/{{ root_env_dir }}/devops/ansible/roles"
   become: true
   tags:
+    - ansible
     - directory
+
+
+- name: "Gerando o arquivo de configuração em /etc/ansible/ansible.cfg"
+  shell: "ansible-config init > /etc/ansible/ansible.cfg"
+  become: true
+  tags:
+    - ansible
+    - config
 
 
 - name: "Atualizando a propriedade roles_path em /etc/ansible/ansible.cfg"
   lineinfile:
     path: "/etc/ansible/ansible.cfg"
     regexp: "roles_path"
-    line: "roles_path    = {{ home_dir }}/{{ root_env_dir }}/devops/ansible/roles"
+    line: "roles_path=/usr/share/ansible/roles:/etc/ansible/roles:{{ home_dir }}/{{ root_env_dir }}/devops/ansible/roles"
     backrefs: yes
     state: present
   become: true
   tags:
+    - ansible
     - config
 
 
@@ -35,21 +45,23 @@
   lineinfile:
     path: "/etc/ansible/ansible.cfg"
     regexp: "log_path"
-    line: "log_path = {{ home_dir }}/{{ root_env_dir }}/devops/ansible/logs/ansible.log"
+    line: "log_path={{ home_dir }}/{{ root_env_dir }}/devops/ansible/logs/ansible.log"
     backrefs: yes
     state: present
   become: true
   tags:
+    - ansible
     - config
 
 
 - name: "Atualizando a propriedade timeout em '/etc/ansible/ansible.cfg'"
   lineinfile:
     path: "/etc/ansible/ansible.cfg"
-    regexp: "timeout ="
-    line: "timeout = {{ timeout_value }}"
+    regexp: "timeout="
+    line: "timeout={{ timeout_value }}"
     backrefs: yes
     state: present
   become: true
   tags:
+    - ansible
     - config

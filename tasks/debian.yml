@@ -7,6 +7,7 @@
     cache_valid_time: 7200
   become: true
   tags:
+    - ansible
     - deps
 
 
@@ -17,6 +18,7 @@
     update_cache: yes
   become: true
   tags:
+    - ansible
     - deps
 
 
@@ -27,6 +29,7 @@
     update_cache: yes
   become: true
   tags:
+    - ansible
     - deps
 
 
@@ -36,6 +39,7 @@
     state: latest
   become: true
   tags:
+    - ansible
     - deps
 
 
@@ -58,10 +62,11 @@
     recurse: yes
   become: true
   tags:
+    - ansible
     - config
 
 
-- name: "Copiando o arquivo de configuracao ansible.cfg"
+- name: "Copiando o arquivo de configuracao ansible.cfg para /etc/ansible/ansible.cfg"
   copy:
     src: "ansible.cfg"
     dest: /etc/ansible/ansible.cfg
@@ -70,4 +75,5 @@
     mode: '0644'
   become: true
   tags:
+    - ansible
     - config
